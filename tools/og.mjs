@@ -15,9 +15,11 @@ import { chromium } from 'playwright-core';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SITE } from '../site.config.mjs';
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const dist = path.join(root, 'dist');
+const SITE_HOST = new URL(SITE.url).host;
 const outDir = path.join(root, 'assets', 'og');
 const BASE = process.env.BASE || 'http://localhost:4321';
 
@@ -141,7 +143,7 @@ const template = (c) => `<!doctype html>
     ${c.desc ? `<p class="desc">${c.desc}</p>` : ''}
   </main>
   <footer>
-    <span class="url">pipaparampara.in</span>
+    <span class="url">${SITE_HOST}</span>
     <span class="tag">${c.lang === 'en' ? 'Sourced, with citations' : 'स्रोतों के साथ'}</span>
   </footer>
 </div>

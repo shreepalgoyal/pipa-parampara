@@ -3,11 +3,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { TITLES } from './src/layout.mjs';
 import { VILLAGES, PATTIS, VERSES } from './src/data.mjs';
+import { SITE, ORIGIN_PLACEHOLDER } from './site.config.mjs';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const out = path.join(root, 'dist');
-const SITE_URL = 'https://pipaparampara.in';
-const SITE_NAME = 'पीपा परंपरा';
+const SITE_URL = SITE.url;
+const SITE_NAME = SITE.name;
+const PLACEHOLDER_BARE = ORIGIN_PLACEHOLDER.replace(/^https?:\/\//, '');
+const SITE_HOST = new URL(SITE_URL).host;
 
 /* ---------- numerals ----------
    The archive is written in Devanagari numerals; readers get Western digits by
@@ -79,7 +82,7 @@ fs.cpSync(path.join(root, 'assets'), path.join(out, 'assets'), { recursive: true
 const pageFiles = [
   'home', 'pipaji', 'vani', 'samdari', 'panch-patti', 'tirth',
   'itihas', 'pehchan', 'sangathan', 'pustakalaya', 'samachar',
-  'yogdan', 'prashnottari', 'granth', 'khoj', 'en', 'notfound',
+  'yogdan', 'prashnottari', 'granth', 'khoj', 'adhikar', 'en', 'notfound',
 ];
 
 const built = [];
@@ -87,6 +90,13 @@ for (const name of pageFiles) {
   const mod = await import(`./src/pages/${name}.mjs`);
   const { slug, html } = mod.default;
   let pageHtml = html;
+
+  /* Page modules write ORIGIN_PLACEHOLDER; the published origin comes from
+     site.config.mjs, so the domain is a one-line edit. Bare hostnames in the
+     citation rows ("pipaparampara.in, accessed …") follow the same rule. */
+  pageHtml = pageHtml
+    .split(ORIGIN_PLACEHOLDER).join(SITE_URL)
+    .split(PLACEHOLDER_BARE).join(SITE_HOST);
 
   /* Stable deep-link anchors for every h2 without one. */
   const prefix = slug.replace(/\.html$/, '');
@@ -414,6 +424,7 @@ const llmsPages = [
   ['प्रश्नोत्तरी', 'prashnottari.html', 'पाठ्यपुस्तक-आधारित १० प्रश्न और उत्तर।'],
   ['खोज', 'khoj.html', 'पूरी साइट में खोज।'],
   ['योगदान दें', 'yogdan.html', 'सुधार, स्रोत और सुझाव भेजने का तरीक़ा।'],
+  ['स्रोत और अधिकार', 'adhikar.html', 'स्रोत, पाठ पर अधिकार, उद्धरण नीति, सुधार और हटाने का रास्ता।'],
   ['English', 'en.html', 'Hand-written English summary of the tradition and the archive.'],
 ];
 
@@ -424,11 +435,11 @@ fs.writeFileSync(path.join(out, 'llms.txt'),
 Canonical: ${SITE_URL}/
 Primary language: Hindi (hi). English summary: ${SITE_URL}/en.html
 Contact: pkds.webteam@gmail.com
-License: original editorial text CC BY-SA 4.0; quoted scriptures remain with their owners.
+License: source code MIT; the original editorial text is not open-licensed (quote and cite with attribution); quoted and scanned works remain with their authors and publishers. Rights, quoting policy and the takedown route: ${SITE_URL}/adhikar.html
 Last updated: ${today}
 
 ## How to cite
-${SITE_NAME}, "पृष्ठ का नाम", pipaparampara.in, accessed ${today}.
+${SITE_NAME}, "पृष्ठ का नाम", ${SITE_HOST}, accessed ${today}.
 
 ## Core pages
 ${llmsPages.map(([t, u, d]) => `- [${t}](${u === 'index.html' ? SITE_URL + '/' : SITE_URL + '/' + u}): ${d}`).join('\n')}

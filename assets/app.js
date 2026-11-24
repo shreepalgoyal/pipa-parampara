@@ -440,7 +440,10 @@
     x.beginPath(); x.moveTo(160, 1196); x.lineTo(W - 160, 1196); x.stroke();
     x.fillStyle = '#665a50';
     x.font = '400 22px "Noto Sans Devanagari", system-ui, sans-serif';
-    x.fillText('pipaparampara.in', cx, 1244);
+    x.fillText((function () {
+      var link = document.querySelector('link[rel="canonical"]');
+      try { return link ? new URL(link.href).host : location.host; } catch (e) { return location.host; }
+    })(), cx, 1244);
 
     return c;
   }

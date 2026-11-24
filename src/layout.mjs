@@ -1,20 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { SITE } from '../site.config.mjs';
 
-export const SITE = {
-  name: 'पीपा परंपरा',
-  nameEn: 'PIPA PARAMPARA',
-  tagline: 'समाज का इतिहास, साहित्य और तीर्थ',
-  desc: 'पीपा क्षत्रिय · दर्जी समाज की परंपरा — स्रोतों के साथ। पीपाजी की कथा, वाणी, समदड़ी धाम, पाँच पट्टी के २०४ गाँव, और सभी पीपा तीर्थ।',
-  email: 'pkds.webteam@gmail.com',
-  url: 'https://pipaparampara.in',
-  sameAs: [
-    'https://www.pkds.in/',
-    'https://panchpatti.in/',
-    'https://shreepipakshatriya.wordpress.com/',
-    'https://darjirajput.blogspot.com/',
-  ],
-};
+export { SITE };
 
 export const NAV = [
   { href: 'index.html', label: 'मुखपृष्ठ' },
@@ -244,6 +232,7 @@ export const TITLES = {
   'prashnottari.html': 'प्रश्नोत्तरी',
   'khoj.html': 'खोज',
   'yogdan.html': 'योगदान दें',
+  'adhikar.html': 'स्रोत और अधिकार',
   'en.html': 'English',
   '404.html': 'पृष्ठ नहीं मिला',
 };
@@ -479,7 +468,7 @@ export function footer() {
     </div>
 
     <div class="footer__bottom">
-      <p>© <span data-year>२०२६</span> पीपा परंपरा। मूल संपादकीय पाठ CC&nbsp;BY-SA&nbsp;4.0; उद्धृत ग्रंथों के अधिकार उनके स्वामियों के हैं। संपर्क <a href="mailto:pkds.webteam@gmail.com">pkds.webteam@gmail.com</a>।</p>
+      <p>© <span data-year>२०२६</span> पीपा परंपरा। यह संकलन हमारा है; उद्धृत ग्रंथों, पाठों और चित्रों के अधिकार उनके स्वामियों के हैं। <a href="adhikar.html">स्रोत, अधिकार और अस्वीकरण</a> · संपर्क <a href="mailto:pkds.webteam@gmail.com">pkds.webteam@gmail.com</a>।</p>
       <span class="footer__legend">
         <span>${badge('ok', 'प्रमाणित')}</span>
         <span>${badge('trad', 'परंपरा')}</span>
