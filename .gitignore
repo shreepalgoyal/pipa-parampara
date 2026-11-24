@@ -1,0 +1,17 @@
+# build output — regenerate with `npm run build`
+dist/
+
+# dependencies — only needed for `npm run verify`
+node_modules/
+package-lock.json
+
+# working notes and raw captures — kept local on purpose: household contact
+# directories, the patron phone list, and OCR of in-copyright print books.
+research/
+
+# macOS
+.DS_Store
+
+# editor
+.vscode/
+.idea/

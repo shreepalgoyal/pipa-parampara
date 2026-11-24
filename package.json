@@ -1,0 +1,18 @@
+{
+  "name": "pipa-parampara",
+  "version": "1.0.0",
+  "private": true,
+  "description": "पीपा परंपरा — a Hindi-first, source-based archive of the Pipa Kshatriya / Darji Rajput tradition.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "python3 -m http.server 4321 --directory dist",
+    "verify": "node tools/verify.mjs",
+    "verify:shots": "node tools/verify.mjs --shots",
+    "audit": "node tools/audit.mjs",
+    "og": "node tools/og.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.65.1"
+  }
+}
