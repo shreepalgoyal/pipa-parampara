@@ -16,7 +16,7 @@ export const SITE = {
   tagline: 'समाज का इतिहास, साहित्य और तीर्थ',
   desc: 'पीपा क्षत्रिय · दर्जी समाज की परंपरा — स्रोतों के साथ। पीपाजी की कथा, वाणी, समदड़ी धाम, पाँच पट्टी के २०४ गाँव, और सभी पीपा तीर्थ।',
   email: 'pkds.webteam@gmail.com',
-  url: 'https://pipa-parampara.pages.dev',
+  url: 'https://pipaji.shreepal.workers.dev',
   sameAs: [
     'https://www.pkds.in/',
     'https://panchpatti.in/',
