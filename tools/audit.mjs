@@ -21,7 +21,7 @@ const PAGES = (process.env.PAGES ? process.env.PAGES.split(',') : [
   'index.html', 'pipaji.html', 'vani.html', 'samdari.html', 'panch-patti.html',
   'tirth.html', 'itihas.html', 'pehchan.html', 'sangathan.html', 'pustakalaya.html',
   'samachar.html', 'yogdan.html', 'prashnottari.html', 'granth.html', 'khoj.html',
-  'en.html', '404.html',
+  'adhikar.html', 'en.html', '404.html',
 ]);
 
 const browser = await chromium.launch({ channel: 'chrome', headless: true });

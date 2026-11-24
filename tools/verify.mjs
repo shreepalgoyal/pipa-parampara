@@ -18,7 +18,8 @@ const SHOT_DIR = '/tmp/pipashots';
 const PAGES = [
   'index.html', 'pipaji.html', 'vani.html', 'samdari.html', 'panch-patti.html',
   'tirth.html', 'itihas.html', 'pehchan.html', 'sangathan.html', 'pustakalaya.html',
-  'samachar.html', 'yogdan.html', 'prashnottari.html', 'granth.html', 'khoj.html', 'en.html',
+  'samachar.html', 'yogdan.html', 'prashnottari.html', 'granth.html', 'khoj.html',
+  'adhikar.html', 'en.html',
 ];
 
 const problems = [];
