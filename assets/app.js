@@ -961,7 +961,7 @@
     var wrap = document.createElement('span');
     wrap.style.cssText = 'display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.35rem';
     wrap.innerHTML = '<button type="button" data-gt-retry>फिर कोशिश करें</button>' +
-      '<a href="en.html">English summary</a>';
+      '<a href="en">English summary</a>';
     status.appendChild(wrap);
     wrap.querySelector('[data-gt-retry]').addEventListener('click', function () {
       setGtStatus('अनुवाद लोड हो रहा है…', 'loading');

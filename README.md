@@ -29,12 +29,14 @@ That convention is the point of the project, not a decoration.
 ## Run it locally
 
 ```bash
-node build.mjs
-cd dist && python3 -m http.server 4321
+npm run build
+npm run serve        # http://localhost:4321, extensionless like Pages
 ```
 
 Output goes to `dist/` (about 4 MB). `build.mjs` wipes and recreates it on every
-run, so never edit files there.
+run, so never edit files there. `tools/serve.mjs` is a small static server that
+resolves `/pipaji` to `pipaji.html`, the way Cloudflare Pages does — a plain file
+server would 404 every internal link, since the site's links carry no extension.
 
 Optional checks, which need `npm install` (`playwright-core` is the only dev
 dependency) and a server running on `:4321`:
@@ -161,19 +163,19 @@ repository; see [Scope](#scope).
 ## Reading features
 
 - **Search** — `/` or `⌘K` from any page, scoped to all / verses / villages / pages.
-  `khoj.html` also accepts `?q=`. Devanagari is normalised (combining marks, spelling
+  `/khoj` also accepts `?q=`. Devanagari is normalised (combining marks, spelling
   variants) so "सुई" and "सुंई" find the same verse.
 - **Search in Latin script** — every entry carries romanised spellings built at build
   time ("समदड़ी" → `samadari`, `samdari`, `smdari`), so a phone keyboard typing
   "samdari", "pachpadra" or "pipaji" finds the same pages, with a vowel-skeleton
   fallback for spellings the index did not anticipate.
-- **Verse permalinks** — each verse is `vani.html#pad-N`, with a link button that
+- **Verse permalinks** — each verse is `/vani#pad-N`, with a link button that
   copies the exact URL and highlights it. The index has one entry per verse, so a
   query lands on the verse, not the whole collection.
 - **Preferences** — the `Aa` dialog sets theme (paper / night / soft / contrast),
   font, text size, measure, motion, numerals and language. Stored in `localStorage`
   and applied before first paint, so there is no flash.
-- **Book mode** — `granth.html` is the corpus laid out as a book: sticky TOC,
+- **Book mode** — `/granth` is the corpus laid out as a book: sticky TOC,
   reading-progress bar, print styles.
 - **Social cards** — every page ships its own `og:image` (`assets/og/<slug>.png`),
   rendered from the built `<h1>` and description by `npm run og`.
@@ -192,10 +194,10 @@ repository; see [Scope](#scope).
 ## Machine-readable surface
 
 - `sitemap.xml` — 17 URLs, `lastmod` from the build date.
-- `robots.txt` — allows everyone, disallows `/404.html`, explicit rules for GPTBot,
+- `robots.txt` — allows everyone, disallows `/404`, explicit rules for GPTBot,
   ClaudeBot, Google-Extended, PerplexityBot and friends.
 - `llms.txt` / `llms-full.txt` — a curated map of the archive for language models.
-- `feed.xml` — Atom feed of the dated events on `samachar.html`.
+- `feed.xml` — Atom feed of the dated events on `/samachar`.
 - `manifest.webmanifest` + icons — installable, offline-tolerant shell.
 - Per-page JSON-LD: `WebSite` + `Organization` + `WebPage` + `BreadcrumbList`
   everywhere, plus `Person` (pipaji), `Book` (granth), `FAQPage` (prashnottari),
@@ -221,8 +223,8 @@ magazine passages and images remain with their authors, translators and publishe
 They appear here as short, attributed excerpts for study, reference and review. The
 scans under `assets/docs/` are third-party documents cited by the source footers;
 they are not ours to license, and they are removed on request. The full statement,
-including the correction and takedown route, is on the site at **`adhikar.html`**:
-<https://pkds.pages.dev/adhikar.html>.
+including the correction and takedown route, is on the site at **`/adhikar`**:
+<https://pkds.pages.dev/adhikar>.
 
 ## Corrections
 

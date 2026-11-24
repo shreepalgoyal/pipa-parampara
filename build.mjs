@@ -85,6 +85,44 @@ const pageFiles = [
   'yogdan', 'prashnottari', 'granth', 'khoj', 'adhikar', 'en', 'notfound',
 ];
 
+/* ---------- extensionless URLs ----------
+   Cloudflare Pages serves /pipaji for pipaji.html and 308-redirects the .html
+   form, so the extensionless path is the address that is actually served. The
+   source keeps real file names — they are what this build writes and what the
+   tools read — and every emitted internal URL is rewritten here, once, so the
+   canonical tag, sitemap, JSON-LD, og:url, feed, llms.txt and the search index
+   cannot drift apart on the question of what a page's address is. */
+const RE = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const PAGE_NAMES = pageFiles
+  .map((n) => (n === 'home' ? 'index.html' : n === 'notfound' ? '404.html' : `${n}.html`))
+  .filter((s) => s !== '404.html')
+  .map((s) => s.replace(/\.html$/, ''));
+const ALT = PAGE_NAMES.filter((s) => s !== 'index').join('|');
+const REL_RE = new RegExp(`"(${ALT})\\.html(?![a-z0-9-])`, 'g');
+const ABS_RE = new RegExp(`${RE(SITE_URL)}/(${ALT})\\.html(?![a-z0-9-])`, 'g');
+const BARE_RE = new RegExp(`${RE(SITE_HOST)}/(${ALT})\\.html(?![a-z0-9-])`, 'g');
+
+function extensionless(html) {
+  return html
+    .split(`${SITE_URL}/index.html`).join(`${SITE_URL}/`)
+    .replace(ABS_RE, `${SITE_URL}/$1`)
+    .replace(/"index\.html(?=["#])/g, '"./"')
+    .replace(REL_RE, '"$1')
+    .replace(BARE_RE, `${SITE_HOST}/$1`);
+}
+
+/* Pages serves 404.html at whatever path was mistyped, so a relative asset URL
+   on that one page would resolve against /a/b/ and arrive broken. Every normal
+   page is one segment deep; the 404 page is not, so its URLs go absolute. */
+function rootAbsolute(html) {
+  return html
+    .replace(/\b(href|src)="\.\/"/g, '$1="/"')
+    .replace(/\b(href|src)="(?![/#]|https?:|mailto:|tel:|data:)([^"]+)"/g, '$1="/$2"');
+}
+
+/* A page's public address, used wherever the build writes a URL itself. */
+const pagePath = (slug) => (slug === 'index.html' ? '/' : `/${slug.replace(/\.html$/, '')}`);
+
 const built = [];
 for (const name of pageFiles) {
   const mod = await import(`./src/pages/${name}.mjs`);
@@ -97,6 +135,9 @@ for (const name of pageFiles) {
   pageHtml = pageHtml
     .split(ORIGIN_PLACEHOLDER).join(SITE_URL)
     .split(PLACEHOLDER_BARE).join(SITE_HOST);
+
+  pageHtml = extensionless(pageHtml);
+  if (name === 'notfound') pageHtml = rootAbsolute(pageHtml);
 
   /* Stable deep-link anchors for every h2 without one. */
   const prefix = slug.replace(/\.html$/, '');
@@ -187,7 +228,7 @@ for (const p of built) {
     const headingId = head ? (head[2].match(/\bid="([^"]+)"/) || [])[1] : '';
     const sectionId = (attrs.match(/\bid="([^"]+)"/) || [])[1];
     const anchor = sectionId || headingId;
-    const url = anchor ? `${p.slug}#${anchor}` : p.slug;
+    const url = anchor ? `${pagePath(p.slug)}#${anchor}` : pagePath(p.slug);
 
     index.push({
       u: url,
@@ -203,7 +244,7 @@ for (const p of built) {
 
   /* If a page has a hero outside a section (none today), index it whole. */
   if (!added) {
-    index.push({ u: p.slug, p: label, t: label, x: plain(latinDigits(main)).slice(0, 2200), s: scope, w: weight });
+    index.push({ u: pagePath(p.slug), p: label, t: label, x: plain(latinDigits(main)).slice(0, 2200), s: scope, w: weight });
   }
 }
 
@@ -285,7 +326,7 @@ function romanVariants(hi) {
 const verseEntries = VERSES.map((v, i) => {
   const text = latinDigits(v.text.replace(/\n/g, ' ')).replace(/\s+/g, ' ').trim();
   return {
-    u: `vani.html#pad-${i + 1}`,
+    u: `/vani#pad-${i + 1}`,
     p: 'वाणी',
     t: text.slice(0, 90),
     x: `${text} — ${v.gloss || ''} ${v.type} · ${v.theme} · ${v.source || ''}`.replace(/\s+/g, ' ').trim(),
@@ -297,7 +338,7 @@ const verseEntries = VERSES.map((v, i) => {
 const PATTI_LABEL = Object.fromEntries(PATTIS.map((x) => [x.key, x.hi]));
 VILLAGES.forEach((v, i) => {
   index.push({
-    u: `panch-patti.html#ganv-${i + 1}`,
+    u: `/panch-patti#ganv-${i + 1}`,
     p: 'पाँच पट्टी',
     t: v.name,
     x: `${v.name} — ${PATTI_LABEL[v.patti] || v.patti} · गोत्र: ${v.gotras}`,
@@ -327,7 +368,7 @@ fs.writeFileSync(path.join(out, 'search-index.json'), JSON.stringify(searchIndex
 const today = new Date().toISOString().slice(0, 10);
 const indexable = built.filter((p) => p.slug !== '404.html');
 const sitemapEntries = indexable.map((p) => {
-  const loc = p.slug === 'index.html' ? `${SITE_URL}/` : `${SITE_URL}/${p.slug}`;
+  const loc = `${SITE_URL}${pagePath(p.slug)}`;
   const priority = p.slug === 'index.html' ? '1.0' : ['pipaji.html', 'granth.html', 'panch-patti.html', 'tirth.html'].includes(p.slug) ? '0.9' : '0.7';
   return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 }).join('\n');
@@ -346,7 +387,7 @@ fs.writeFileSync(path.join(out, 'robots.txt'),
 `# ${SITE_NAME} — ${SITE_URL}
 User-agent: *
 Allow: /
-Disallow: /404.html
+Disallow: /404
 
 ${AI_BOTS.map((b) => `User-agent: ${b}\nAllow: /`).join('\n\n')}
 
@@ -372,9 +413,9 @@ fs.writeFileSync(path.join(out, 'manifest.webmanifest'), JSON.stringify({
     { src: 'assets/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
   ],
   shortcuts: [
-    { name: 'अपना गाँव खोजें', url: '/panch-patti.html' },
-    { name: 'पूरा ग्रंथ पढ़ें', url: '/granth.html' },
-    { name: 'साइट में खोजें', url: '/khoj.html' },
+    { name: 'अपना गाँव खोजें', url: '/panch-patti' },
+    { name: 'पूरा ग्रंथ पढ़ें', url: '/granth' },
+    { name: 'साइट में खोजें', url: '/khoj' },
   ],
 }, null, 2));
 
@@ -384,8 +425,8 @@ const xmlEsc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').rep
 const feedUpdated = '2026-11-20T00:00:00+05:30';
 const feedEntries = NEWS.map((n) => `  <entry>
     <title type="text">${xmlEsc(n.title)}</title>
-    <link href="${SITE_URL}/samachar.html"/>
-    <id>${SITE_URL}/samachar.html#${encodeURIComponent(n.title.slice(0, 24))}</id>
+    <link href="${SITE_URL}/samachar"/>
+    <id>${SITE_URL}/samachar#${encodeURIComponent(n.title.slice(0, 24))}</id>
     <updated>${n.iso ? new Date(n.iso).toISOString() : feedUpdated}</updated>
     <summary type="text">${xmlEsc(n.body + ' ' + (n.note || ''))}</summary>
     <category term="${xmlEsc(n.tag)}"/>
@@ -396,7 +437,7 @@ fs.writeFileSync(path.join(out, 'feed.xml'),
   <title>${SITE_NAME} — समाचार</title>
   <subtitle>समाज के आयोजन, जयंती, सामूहिक विवाह और विरासत की ख़बरें।</subtitle>
   <link href="${SITE_URL}/feed.xml" rel="self"/>
-  <link href="${SITE_URL}/samachar.html"/>
+  <link href="${SITE_URL}/samachar"/>
   <id>${SITE_URL}/feed.xml</id>
   <updated>${feedUpdated}</updated>
   <author><name>${SITE_NAME}</name><email>goyaltailors@gmail.com</email></author>
@@ -433,16 +474,16 @@ fs.writeFileSync(path.join(out, 'llms.txt'),
 > पीपा क्षत्रिय · दर्जी समाज की परंपरा, स्रोतों के साथ। A source-based public archive of the Pipa Kshatriya / Darji Rajput tradition: the life and verses of Pipaji, the five pattis and 204 villages, Samdari Dham, pilgrimage sites, and the community's organisations.
 
 Canonical: ${SITE_URL}/
-Primary language: Hindi (hi). English summary: ${SITE_URL}/en.html
+Primary language: Hindi (hi). English summary: ${SITE_URL}/en
 Contact: goyaltailors@gmail.com
-License: source code MIT; the original editorial text is not open-licensed (quote and cite with attribution); quoted and scanned works remain with their authors and publishers. Rights, quoting policy and the takedown route: ${SITE_URL}/adhikar.html
+License: source code MIT; the original editorial text is not open-licensed (quote and cite with attribution); quoted and scanned works remain with their authors and publishers. Rights, quoting policy and the takedown route: ${SITE_URL}/adhikar
 Last updated: ${today}
 
 ## How to cite
 ${SITE_NAME}, "पृष्ठ का नाम", ${SITE_HOST}, accessed ${today}.
 
 ## Core pages
-${llmsPages.map(([t, u, d]) => `- [${t}](${u === 'index.html' ? SITE_URL + '/' : SITE_URL + '/' + u}): ${d}`).join('\n')}
+${llmsPages.map(([t, u, d]) => `- [${t}](${SITE_URL}${u === 'index.html' ? '/' : '/' + u.replace(/\.html$/, '')}): ${d}`).join('\n')}
 
 ## Key facts
 - पीपाजी गागरोन के खींची चौहान राजा थे; रामानंद के शिष्य; टोडानगर में गृहस्थ-संत के रूप में रहे।
