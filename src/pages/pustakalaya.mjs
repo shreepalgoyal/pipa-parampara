@@ -27,6 +27,7 @@ const body = `
         <a class="card__link" href="${d.href}"${d.href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${d.cta}</a>
       </article>`).join('')}
     </div>
+    <p class="tiny" style="margin-top:1.2rem">पुस्तकालय में रखी दो प्रतियाँ — <em>क्षितिज</em> का पाठ १८ और <em>जीवन-गाथा</em> — मूल प्रकाशकों की हैं, इस साइट की नहीं। ये केवल अध्ययन और सन्दर्भ के लिए रखी गई हैं; इनके अधिकार उनके प्रकाशकों के पास हैं, और अनुरोध पर ये तुरंत हटा दी जाएँगी। <a href="adhikar.html">पूरी नीति पढ़ें</a>।</p>
   </div>
 </section>
 
