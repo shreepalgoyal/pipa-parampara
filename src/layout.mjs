@@ -468,7 +468,7 @@ export function footer() {
     </div>
 
     <div class="footer__bottom">
-      <p>© <span data-year>२०२६</span> पीपा परंपरा। यह संकलन हमारा है; उद्धृत ग्रंथों, पाठों और चित्रों के अधिकार उनके स्वामियों के हैं। <a href="adhikar.html">स्रोत, अधिकार और अस्वीकरण</a> · संपर्क <a href="mailto:pkds.webteam@gmail.com">pkds.webteam@gmail.com</a>।</p>
+      <p>© <span data-year>२०२६</span> पीपा परंपरा। यह संकलन हमारा है; उद्धृत ग्रंथों, पाठों और चित्रों के अधिकार उनके स्वामियों के हैं। <a href="adhikar.html">स्रोत, अधिकार और अस्वीकरण</a> · संपर्क <a href="mailto:goyaltailors@gmail.com">goyaltailors@gmail.com</a>।</p>
       <span class="footer__legend">
         <span>${badge('ok', 'प्रमाणित')}</span>
         <span>${badge('trad', 'परंपरा')}</span>

@@ -399,7 +399,7 @@ fs.writeFileSync(path.join(out, 'feed.xml'),
   <link href="${SITE_URL}/samachar.html"/>
   <id>${SITE_URL}/feed.xml</id>
   <updated>${feedUpdated}</updated>
-  <author><name>${SITE_NAME}</name><email>pkds.webteam@gmail.com</email></author>
+  <author><name>${SITE_NAME}</name><email>goyaltailors@gmail.com</email></author>
 ${feedEntries}
 </feed>
 `);
@@ -434,7 +434,7 @@ fs.writeFileSync(path.join(out, 'llms.txt'),
 
 Canonical: ${SITE_URL}/
 Primary language: Hindi (hi). English summary: ${SITE_URL}/en.html
-Contact: pkds.webteam@gmail.com
+Contact: goyaltailors@gmail.com
 License: source code MIT; the original editorial text is not open-licensed (quote and cite with attribution); quoted and scanned works remain with their authors and publishers. Rights, quoting policy and the takedown route: ${SITE_URL}/adhikar.html
 Last updated: ${today}
 

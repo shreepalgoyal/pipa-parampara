@@ -82,7 +82,7 @@ const body = `
     <p>Machine-readable versions: <a href="llms.txt">llms.txt</a> for a summary and page index, <a href="llms-full.txt">llms-full.txt</a> for the full Hindi text section by section, <a href="search-index.json">search-index.json</a> for the search corpus, and <a href="sitemap.xml">sitemap.xml</a> for the URL list.</p>
 
     <h2>Corrections</h2>
-    <p>This archive is incomplete on purpose, and says so. If a village is missing, a gotra is wrong, a date is disputed, or you hold a document we do not, write to <a href="mailto:pkds.webteam@gmail.com">pkds.webteam@gmail.com</a> or use the <a href="yogdan.html">contribution page</a>. Corrections are published with the name of the person who supplied them, unless they ask otherwise.</p>
+    <p>This archive is incomplete on purpose, and says so. If a village is missing, a gotra is wrong, a date is disputed, or you hold a document we do not, write to <a href="mailto:goyaltailors@gmail.com">goyaltailors@gmail.com</a> or use the <a href="yogdan.html">contribution page</a>. Corrections are published with the name of the person who supplied them, unless they ask otherwise.</p>
 
     <p class="book-footnote" style="margin-top:2.4rem">Written in English for this archive. It is not a machine translation of the Hindi pages, and the Hindi remains the primary text.</p>
     </div>

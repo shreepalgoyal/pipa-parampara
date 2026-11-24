@@ -292,7 +292,7 @@ const body = `
           <p class="book-footnote" style="font-size:.9rem;color:var(--ink-2)">पीपा परंपरा, “ग्रंथ — पूरा संग्रह”, <em>pipaparampara.in</em>, अभिगम <span data-date>२० नवंबर २०२६</span>।</p>
           <div class="note">
             <span class="note__label">सुधार और आभार</span>
-            <p>यह संग्रह अधूरा है — और अधूरा होना ही उसका ईमान है। कोई गाँव छूटा हो, कोई गोत्र ग़लत हो, कोई स्रोत मिला हो, या कोई तस्वीर/दस्तावेज़ साझा करना हो — <a href="yogdan.html">योगदान पृष्ठ</a> से लिखें या <a href="mailto:pkds.webteam@gmail.com">pkds.webteam@gmail.com</a> पर भेजें।</p>
+            <p>यह संग्रह अधूरा है — और अधूरा होना ही उसका ईमान है। कोई गाँव छूटा हो, कोई गोत्र ग़लत हो, कोई स्रोत मिला हो, या कोई तस्वीर/दस्तावेज़ साझा करना हो — <a href="yogdan.html">योगदान पृष्ठ</a> से लिखें या <a href="mailto:goyaltailors@gmail.com">goyaltailors@gmail.com</a> पर भेजें।</p>
             <p>आभार: समदड़ी मंदिर ट्रस्ट, अखिल भारतीय पीपा क्षत्रिय महासभा, वागड़ शाखा, पीकेडीएस मीडिया फ़ाउंडेशन, और वे सब जिन्होंने अपने घर के दस्तावेज़, तस्वीरें और स्मृतियाँ इस संग्रह के लिए खोलीं।</p>
           </div>
           <div class="book__nav">

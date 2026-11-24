@@ -19,7 +19,7 @@ const body = `
         title: 'क्या भेजना है?',
         intro: 'फ़ॉर्म भरने पर आपका ईमेल ऐप खुलेगा, जिसमें सारी जानकारी पहले से लिखी होगी। आप उसे जाँचकर भेज सकते हैं।',
       })}
-      <form data-mailto-form data-to="pkds.webteam@gmail.com" data-subject="पीपा परंपरा — योगदान">
+      <form data-mailto-form data-to="goyaltailors@gmail.com" data-subject="पीपा परंपरा — योगदान">
         <div class="grid grid--2" style="gap:1rem">
           <div class="field">
             <label for="f-name">आपका नाम</label>
@@ -65,7 +65,7 @@ const body = `
       <noscript>
         <div class="note" style="margin-top:1.5rem">
           <span class="note__label">जावास्क्रिप्ट बंद है</span>
-          <p>फ़ॉर्म काम नहीं करेगा। कृपया सीधे लिखें: <strong>pkds.webteam@gmail.com</strong></p>
+          <p>फ़ॉर्म काम नहीं करेगा। कृपया सीधे लिखें: <strong>goyaltailors@gmail.com</strong></p>
           <p>विषय में "पीपा परंपरा — योगदान" लिखें, और अपना नाम, गाँव और पट्टी बताएँ।</p>
         </div>
       </noscript>
@@ -79,7 +79,7 @@ const body = `
         <p><strong>४. सुधार</strong> — गाँव की वर्तनी, गोत्र, तिथि, नाम। हम ग़लतियाँ स्वीकार करते हैं; यही इस साइट का तरीक़ा है।</p>
       </div>
       <div class="dl" style="margin-top:1.5rem">
-        <div class="dl__row"><span class="dl__k">ईमेल</span><span class="dl__v">pkds.webteam@gmail.com</span></div>
+        <div class="dl__row"><span class="dl__k">ईमेल</span><span class="dl__v">goyaltailors@gmail.com</span></div>
         <div class="dl__row"><span class="dl__k">समदड़ी ट्रस्ट</span><span class="dl__v">02900-276257</span></div>
         <div class="dl__row"><span class="dl__k">वागड़ शाखा</span><span class="dl__v">गोविन्द दर्जी · 7665057775</span></div>
       </div>
