@@ -49,10 +49,23 @@ for (const slug of PAGES) {
       const r = await fetch(u.href, { method: 'HEAD' }).catch(() => null);
       if (!r || !r.ok) broken.push(href);
     }
+    /* Markup that leaked into visible text. A stray quote in one tag makes the
+       HTML tokenizer give up and emit the whole tag as a text node, which no
+       other check here notices: the page still renders, links still resolve,
+       and the reader just sees `a class="brand" href="./"`. */
+    const leaks = [];
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+      const t = n.nodeValue;
+      if (!t || !/\b(class|href|src|id)="/.test(t)) continue;
+      if (n.parentElement && n.parentElement.closest('pre,code,kbd,samp,script,style,textarea,noscript')) continue;
+      leaks.push(t.replace(/\s+/g, ' ').trim().slice(0, 80));
+    }
     return {
       overflow: de.scrollWidth - de.clientWidth,
       dupes,
       broken,
+      leaks,
       title: document.title,
       h1: document.querySelectorAll('h1').length,
       lang: de.lang,
@@ -64,6 +77,7 @@ for (const slug of PAGES) {
   if (report.overflow > 0) note(`${slug}: overflow ${report.overflow}px`);
   if (report.dupes.length) note(`${slug}: duplicate ids ${report.dupes.slice(0, 5).join(', ')}`);
   if (report.broken.length) note(`${slug}: broken links ${report.broken.slice(0, 5).join(', ')}`);
+  if (report.leaks.length) note(`${slug}: markup in text — ${report.leaks.slice(0, 3).join(' | ')}`);
   if (!report.title) note(`${slug}: empty <title>`);
   if (report.h1 !== 1) note(`${slug}: ${report.h1} <h1> elements`);
   if (!report.lang) note(`${slug}: missing <html lang>`);

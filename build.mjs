@@ -106,7 +106,11 @@ function extensionless(html) {
   return html
     .split(`${SITE_URL}/index.html`).join(`${SITE_URL}/`)
     .replace(ABS_RE, `${SITE_URL}/$1`)
-    .replace(/"index\.html(?=["#])/g, '"./"')
+    /* Both forms consume the closing quote: the earlier lookahead left it
+       behind and produced href="./"" — a stray quote that made the tokenizer
+       treat the whole tag as text. */
+    .replace(/"index\.html#/g, '"./#')
+    .replace(/"index\.html"/g, '"./"')
     .replace(REL_RE, '"$1')
     .replace(BARE_RE, `${SITE_HOST}/$1`);
 }
